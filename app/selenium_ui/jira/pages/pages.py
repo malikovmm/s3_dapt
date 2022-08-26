@@ -6,7 +6,7 @@ import json
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
-    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators
+    IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators, S3PagesLocators
 
 
 class PopupManager(BasePage):
@@ -248,3 +248,15 @@ class Board(BasePage):
 
     def wait_for_scrum_board_backlog(self):
         self.wait_until_present(BoardLocators.scrum_board_backlog_content)
+
+class ProjectFolderPage(BasePage):
+    def __init__(self, driver, project_key: str):
+        BasePage.__init__(self, driver=driver)
+        url_manager = UrlManager(project_key=project_key)
+        self.page_url = url_manager.create_s3_project_folder_page()
+        self.page_loaded_selector = [S3PagesLocators.s3_project_page]
+
+
+    def wait_for_page_loaded(self):
+        self.wait_until_any_ec_presented(
+            selectors=[S3PagesLocators.s3_project_page])

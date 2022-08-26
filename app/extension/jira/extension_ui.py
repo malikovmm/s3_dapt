@@ -4,9 +4,18 @@ from selenium.webdriver.common.by import By
 
 from selenium_ui.base_page import BasePage
 from selenium_ui.conftest import print_timing
-from selenium_ui.jira.pages.pages import Login
+from selenium_ui.jira.pages.pages import Login, ProjectFolderPage, PopupManager
 from util.conf import JIRA_SETTINGS
 
+def project_page_load(webdriver, datasets):
+    page = ProjectFolderPage(webdriver, datasets['project_key'])
+    @print_timing("selenium_s3_project_page_load")
+    def measure():
+        page.go_to()
+        page.wait_for_page_loaded()
+
+    measure()
+    PopupManager(webdriver).dismiss_default_popup()
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)

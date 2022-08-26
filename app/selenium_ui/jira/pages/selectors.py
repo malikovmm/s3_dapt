@@ -26,6 +26,7 @@ class UrlManager:
         self.boards_list_params = '/secure/ManageRapidViews.jspa'
         self.scrum_board_backlog_params = f"/secure/RapidBoard.jspa?rapidView={board_id}&view=planning"
         self.scrum_board_params = f"/secure/RapidBoard.jspa?rapidView={board_id}"
+        self.project_folder = f"/projects/{project_key}?selectedItem=com.topshelfsolution.simplecloudfiles:cloudfiles-project-files-item"
 
     def login_url(self):
         return f"{self.host}{self.login_params}"
@@ -62,6 +63,9 @@ class UrlManager:
 
     def logout_url(self):
         return f"{self.host}{self.logout_params}"
+
+    def create_s3_project_folder_page(self):
+        return f"{self.host}{self.project_folder}"
 
 
 class LoginPageLocators:
@@ -145,3 +149,7 @@ class BoardLocators:
     # Scrum boards
     scrum_board_backlog_content = (By.CSS_SELECTOR, "#ghx-backlog[data-rendered]:not(.browser-metrics-stale)")
     board_columns = (By.CSS_SELECTOR, ".ghx-column")
+
+class S3PagesLocators:
+    s3_project_page = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]')
+    
