@@ -65,6 +65,13 @@ Refer to `app/selenium_ui/jira/modules.py` for examples.
 def test_s3_project_page_load(jira_webdriver, jira_datasets, jira_screen_shots):
     extension_ui.project_page_load(jira_webdriver, jira_datasets)
 
+
+def test_s3_project_page_create_folder(jira_webdriver, jira_datasets, jira_screen_shots):
+    extension_ui.project_page_create_folder(jira_webdriver, jira_datasets)
+
+def test_s3_project_page_upload(jira_webdriver, jira_datasets, jira_screen_shots):
+    extension_ui.project_page_upload(jira_webdriver, jira_datasets)
+
 # def test_1_selenium_custom_action(jira_webdriver, jira_datasets, jira_screen_shots):
 #     extension_ui.app_specific_action(jira_webdriver, jira_datasets)
 

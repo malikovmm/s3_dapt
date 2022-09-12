@@ -1,9 +1,11 @@
+from distutils.command.upload import upload
+import os
 from selenium.webdriver.common.keys import Keys
 from selenium_ui.conftest import retry
 import time
 import random
 import json
-
+import requests
 from selenium_ui.base_page import BasePage
 from selenium_ui.jira.pages.selectors import UrlManager, LoginPageLocators, DashboardLocators, PopupLocators, \
     IssueLocators, ProjectLocators, SearchLocators, BoardsListLocators, BoardLocators, LogoutLocators, S3PagesLocators
@@ -260,3 +262,26 @@ class ProjectFolderPage(BasePage):
     def wait_for_page_loaded(self):
         self.wait_until_any_ec_presented(
             selectors=[S3PagesLocators.s3_project_page])
+
+    def create_folder(self):
+
+        folder_create_button = self.wait_until_clickable(selector=S3PagesLocators.s3_new_folder_button)
+        folder_create_button.click()
+
+        folder_input = self.wait_until_visible(selector=S3PagesLocators.s3_new_folder_input)
+        new_folder_name = self.generate_random_string(10)
+        folder_input.send_keys(Keys.CONTROL + 'a')
+        folder_input.send_keys(Keys.DELETE)
+        folder_input.send_keys(new_folder_name)
+
+        folder_submit_button = self.wait_until_clickable(selector=S3PagesLocators.s3_new_folder_submit)
+        folder_submit_button.click()
+
+        self.wait_until_visible(S3PagesLocators.get_object_by_content(new_folder_name))
+
+
+    def upload_file(self, temp_file_path):
+        self.wait_until_clickable(selector=S3PagesLocators.s3_upload_button)
+        upload_input = self.get_element(S3PagesLocators.s3_upload_input)
+        upload_input.send_keys(temp_file_path)
+        self.wait_until_clickable(S3PagesLocators.get_date_element(os.path.basename(temp_file_path)))

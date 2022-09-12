@@ -152,4 +152,16 @@ class BoardLocators:
 
 class S3PagesLocators:
     s3_project_page = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]')
+    s3_new_folder_button = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[1]/div[1]/div[2]/button')
+    s3_new_folder_input = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[3]/table/tbody/tr[1]/td/form/div[1]/div[1]/input')
+    s3_new_folder_submit = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[3]/table/tbody/tr[1]/td/form/div[2]/button[1]')
+    s3_upload_button = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[1]/div[1]/div[1]/button')
+    s3_upload_input = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[1]/div[1]/div[1]/button/span[2]/input')
+    s3_file_upload_progress_bar = (By.XPATH, '//*[@id="simplecloudfiles-project-files"]/div/div[@role=\'presentation\']')
+    
+    def get_object_by_content(text):
+        return (By.XPATH, f'//*[@id="simplecloudfiles-project-files"]/div//table/tbody/tr/td/a/span[text() = \'{text}\']')
+    
+    def get_date_element(text):
+        return (By.XPATH, f'//*[@id="simplecloudfiles-project-files"]/div//table/tbody/tr/td/a/span[text() = \'{text}\']/../../../td[5]/button[1]')
     

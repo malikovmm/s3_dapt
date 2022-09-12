@@ -1,10 +1,10 @@
-import random
+import os
 
 from selenium.webdriver.common.by import By
-
+from PIL import Image
 from selenium_ui.base_page import BasePage
 from selenium_ui.conftest import print_timing
-from selenium_ui.jira.pages.pages import Login, ProjectFolderPage, PopupManager
+from selenium_ui.jira.pages.pages import ProjectFolderPage, PopupManager
 from util.conf import JIRA_SETTINGS
 
 def project_page_load(webdriver, datasets):
@@ -13,9 +13,58 @@ def project_page_load(webdriver, datasets):
     def measure():
         page.go_to()
         page.wait_for_page_loaded()
-
     measure()
     PopupManager(webdriver).dismiss_default_popup()
+
+def project_page_create_folder(webdriver, datasets):
+    page = ProjectFolderPage(webdriver, datasets['project_key'])
+
+    @print_timing("project_page_create_folder")
+    def measure():
+        PopupManager(webdriver).dismiss_default_popup()
+
+        @print_timing('project_page_create_folder:load_page')
+        def sub_measure():
+            page.go_to()
+            page.wait_for_page_loaded()
+
+        sub_measure()
+
+        @print_timing('project_page_create_folder:folder_creating')
+        def sub_measure():
+            page.create_folder()
+
+        sub_measure()
+    measure()
+    PopupManager(webdriver).dismiss_default_popup()
+
+
+def project_page_upload(webdriver, datasets):
+    page = ProjectFolderPage(webdriver, datasets['project_key'])
+    temp_file = Image.new(mode='RGB', size=(64, 64), color='red')
+    temp_file_path = os.path.join(os.getcwd(), BasePage.generate_random_string(10) + '.jpg')
+    temp_file.save(temp_file_path)
+
+    @print_timing("project_page_upload")
+    def measure():
+        PopupManager(webdriver).dismiss_default_popup()
+
+        @print_timing('project_page_upload:load_page')
+        def sub_measure():
+            page.go_to()
+            page.wait_for_page_loaded()
+
+        sub_measure()
+
+        @print_timing('project_page_upload:uploading')
+        def sub_measure():
+            page.upload_file(temp_file_path)
+
+        sub_measure()
+    measure()
+    os.remove(temp_file_path)
+    PopupManager(webdriver).dismiss_default_popup()
+
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
